@@ -4,7 +4,7 @@ import {
     SET_CURRENT,
     CLEAR_CURRENT,
     UPDATE_CONTACT,
-    FILTERS_CONTACT,
+    FILTER_CONTACTS,
     CLEAR_FILTER
 } from '../types';
 
@@ -37,7 +37,7 @@ export default (state, action) => {
                 ...state,
                 current: null
             }
-        case FILTERS_CONTACT:
+        case FILTER_CONTACTS:
             return {
                 ...state,
                 filtered: state.contacts.filter(contact => {
