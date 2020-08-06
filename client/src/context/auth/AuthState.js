@@ -24,14 +24,48 @@ const AuthState = (props) => {
     const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     // Load user
+    const loadUser = () => console.log('loadUser')
 
     // Register User
+    const registerUser = async (formData) => {
+        const config = new Headers({
+            "Content-Type": "application/json"
+        })
+
+        try {
+            const res = await fetch('/api/users', {
+                method: "POST",
+                headers: config,
+                body: JSON.stringify(formData)
+            })
+
+            if (!res.ok) {
+                const data = await res.json()
+                throw data;
+            }
+
+            const data = await res.json()
+
+            dispatch({
+                type: REGISTER_SUCCESS,
+                payload: data
+            })
+        } catch (err) {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.msg || err.errors[0].msg
+            })
+        }
+    }
 
     // Login user
+    const loginUser = () => console.log('loginUser')
 
     // Logout
+    const logoutUser = () => console.log('logoutUser')
 
     // Clear errors
+    const clearErrors = () => dispatch({ type: CLEAR_ERRORS })
 
     return (
         <AuthContext.Provider
@@ -40,7 +74,12 @@ const AuthState = (props) => {
                 isAuthenticated: state.isAuthenticated,
                 loading: state.loading,
                 user: state.user,
-                error: state.errors
+                error: state.error,
+                loadUser,
+                registerUser,
+                loginUser,
+                logoutUser,
+                clearErrors
             }}
         >
             {props.children}
