@@ -84,7 +84,36 @@ const AuthState = (props) => {
     }
 
     // Login user
-    const loginUser = () => console.log('loginUser')
+    const loginUser = async (formData) => {
+        const config = new Headers({
+            "Content-Type": "application/json"
+        })
+
+        try {
+            const res = await fetch('/api/auth', {
+                method: "POST",
+                headers: config,
+                body: JSON.stringify(formData)
+            })
+
+            if (!res.ok) {
+                const data = await res.json()
+                throw data;
+            }
+
+            const data = await res.json()
+
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: data
+            })
+        } catch (err) {
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: err.msg || err.errors[0].msg
+            })
+        }
+    }
 
     // Logout
     const logoutUser = () => console.log('logoutUser')
